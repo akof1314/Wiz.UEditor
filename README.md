@@ -13,7 +13,7 @@
 - 修复非中文界面无法安装
 
 #### 下载安装
-通过 [Github 下载](https://github.com/akof1314/Wiz.UEditor/archive/master.zip "Github 下载")安装，解压到`XXX\My Knowledge\Plugins\iz.UEditor`文件夹。
+通过 [Github 下载](https://github.com/akof1314/Wiz.UEditor/archive/master.zip "Github 下载")安装，解压到`XXX\My Knowledge\Plugins\Wiz.UEditor`文件夹。
 
 #### 使用方法
 点击`编辑`按钮箭头，选择`百度编辑器`编辑。

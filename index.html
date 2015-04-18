@@ -90,7 +90,7 @@
         //
         if (objDocument) {
             //
-            document.title = "编辑 " + objDocument.Title;
+            document.title = "编辑 " + objDocument.Title.replace(new RegExp(".md", "gi"), "");
             //
             var tempPath = objCommon.GetSpecialFolder("TemporaryFolder");
             var d = new Date();
@@ -118,7 +118,9 @@
                     saveDocument(editor);
                 }
             });
-            //
+            
+			////////////////////////////////////////////////
+			// 增加或减少工具栏按钮，请在这里修改
             var bars =
             [
                 [

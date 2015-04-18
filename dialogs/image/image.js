@@ -465,7 +465,7 @@ var imageUploader = {};
             }
         };
         option = utils.extend( option, callbacks, false );
-        flashObj = new baidu.flash.imageUploader( option );
+        //flashObj = new baidu.flash.imageUploader( option );
     }
 
     /**

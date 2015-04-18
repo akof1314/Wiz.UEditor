@@ -10,9 +10,9 @@
     <div class="wrapper">
         <div id="imageTab">
             <div id="tabHeads">
-                <span tabSrc="remote">网络图片</span>
-                <span tabSrc="local"  class="focus">本地上传</span>
-                <span tabSrc="imgManager">在线管理</span>
+                <span tabSrc="remote"  class="focus">插入图片</span>
+                <span tabSrc="local" style="display: none">本地上传</span>
+                <span tabSrc="imgManager" style="display: none">在线管理</span>
                 <span tabSrc="imgSearch">图片搜索</span>
             </div>
             <div id="tabBodys">
@@ -20,7 +20,7 @@
                     <table cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="label"><label for="url">地 址：</label></td>
-                            <td><input id="url" type="text"/></td>
+                            <td><input id="url" type="text"/><input id="imgSearchBtn" type="button" value="本地浏览" /></td>
                         </tr>
                         <tr>
                             <td class="label"><label for="width">宽 度：</label></td>

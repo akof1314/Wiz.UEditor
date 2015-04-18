@@ -1,0 +1,234 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=8">
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title></title>
+    
+    <script type="text/javascript">
+        var objApp = window.external;
+        var objCommon = objApp.CreateWizObject("WizKMControls.WizCommonUI");
+        //
+        window.UEDITOR_HOME_URL = "file:///" + objApp.GetPluginPathByScriptFileName("baidu_editor.js").replace(/\\/gi, "/");
+    </script>
+
+    <script type="text/javascript" charset="utf-8" src="editor_config.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="editor_all.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="themes/default/ueditor.css" />
+    <style type="text/css">
+        .edui-for-mybutton .edui-icon
+        {
+            background-position: -480px -20px;
+        }
+    </style>
+</head>
+<body>
+    <textarea id="textareaEditor" cols="1"></textarea>
+
+    <script type="text/javascript">
+        //
+        function loadString(name) {
+            var pluginPath = objApp.GetPluginPathByScriptFileName("baidu_editor.js");
+            var languageFileName = pluginPath + "plugin.ini";
+            return objApp.LoadStringFromFile(languageFileName, name);
+        }
+        //
+        function getQueryString(name) {
+            if (location.href.indexOf("?") == -1 || location.href.indexOf(name + '=') == -1) {
+                return '';
+            }
+            var queryString = location.href.substring(location.href.indexOf("?") + 1);
+
+            var parameters = queryString.split("&");
+
+            var pos, paraName, paraValue;
+            for (var i = 0; i < parameters.length; i++) {
+                pos = parameters[i].indexOf('=');
+                if (pos == -1) { continue; }
+
+                paraName = parameters[i].substring(0, pos);
+                paraValue = parameters[i].substring(pos + 1);
+
+                if (paraName == name) {
+                    return unescape(paraValue.replace(/\+/g, " "));
+                }
+            }
+            return '';
+        };
+
+
+        function getEditorHtml() {
+            return editor.document.documentElement.outerHTML;
+        }
+
+        //
+        var guid = getQueryString("guid");
+        var kbGUID = getQueryString("kbguid");
+        //
+        var objDatabase = null;
+        if (kbGUID == "" || kbGUID == null) {
+            objDatabase = objApp.Database;
+        }
+        else {
+            objDatabase = objApp.GetGroupDatabase(kbGUID);
+        }
+        //
+        var objDocument = null;
+        //
+        try {
+            objDocument = objDatabase.DocumentFromGUID(guid);
+        }
+        catch (err) {
+        }
+
+        //
+        var modified = false;
+        var editor = null;
+        //
+        if (objDocument) {
+            //
+            document.title = "编辑 " + objDocument.Title;
+            //
+            var tempPath = objCommon.GetSpecialFolder("TemporaryFolder");
+            var d = new Date();
+            var htmlFileTitle = "baidu_" + d.getTime();
+            var htmlResourcePathFrom = htmlFileTitle + "_files";
+            var htmlResourcePathTo = tempPath + htmlResourcePathFrom;
+
+            var htmlFileName = tempPath + htmlFileTitle + ".html";
+            //
+            objDocument.SaveToHtml(htmlFileName, 0);
+            //
+            var htmlText = objCommon.LoadTextFromFile(htmlFileName);
+            //
+            var replaceFrom = new RegExp(htmlResourcePathFrom, "gi");
+            htmlText = htmlText.replace(replaceFrom, htmlResourcePathTo);
+            //
+            var strSave = loadString("Save");
+            //
+            var saveButton = new baidu.editor.ui.Button({
+                className: 'edui-for-mybutton',
+                title: strSave,
+                label: strSave,
+                showText: false,
+                onclick: function() {
+                    saveDocument(editor);
+                }
+            });
+            //
+            var bars =
+            [
+                [
+                    saveButton, '|',
+                    'Source', '|', 'Undo', 'Redo', '|',
+                    'Bold', 'Italic', 'Underline', 'StrikeThrough', 'Superscript', 'Subscript', 'RemoveFormat', 'FormatMatch','AutoTypeSet', '|',
+                    'BlockQuote', '|', 'PastePlain', '|', 'ForeColor', 'BackColor', 'InsertOrderedList', 'InsertUnorderedList','SelectAll', 'ClearDoc', '|', 'CustomStyle',
+                    'Paragraph', '|','RowSpacingTop', 'RowSpacingBottom','LineHeight', '|','FontFamily', 'FontSize', '|',
+                    'DirectionalityLtr', 'DirectionalityRtl', '|', '', 'Indent', '|',
+                    'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyJustify', '|',
+                    'Link', 'Unlink', 'Anchor', '|', 'ImageNone', 'ImageLeft', 'ImageRight', 'ImageCenter', '|', 'Emotion', 'Map', 'GMap', 'PageBreak', 'HighlightCode', '|',
+                    'Horizontal', 'Date', 'Time', 'Spechars', 'WordImage', '|',
+                    'InsertTable', 'DeleteTable', 'InsertParagraphBeforeTable', 'InsertRow', 'DeleteRow', 'InsertCol', 'DeleteCol', 'MergeCells', 'MergeRight', 'MergeDown', 'SplittoCells', 'SplittoRows', 'SplittoCols', '|',
+                     'Print', 'Preview', 'SearchReplace','Help'
+                ]
+            ];
+            //
+            var options = {
+                fullscreen: true,
+                editorFullHtml: htmlText,
+                elementPathEnabled: false,
+                wordCount: false,
+                maximumWords: 100000000,
+                toolbars: bars,
+                focus: true
+            };
+            //
+            editor = new baidu.editor.ui.Editor(options);
+            //
+            editor.render('textareaEditor');
+
+            //
+            function onAfterExecCommand() {
+                modified = true;
+            }
+            //
+            function onKeyDown(type, evt) {
+                modified = true;
+                var e = evt;
+                if (e.ctrlKey && !e.altKey && !e.shiftKey) {
+                    if (String.fromCharCode(e.keyCode).toLocaleUpperCase() == 'S') {
+
+                        saveDocument(editor);
+                        //
+                        e.returnValue = false;
+                    }
+                    else if (String.fromCharCode(e.keyCode).toLocaleUpperCase() == 'V') {
+                        if (actionPaste()) {
+                            e.returnValue = false;
+                            e.keyCode = 0;
+                        }
+                        else {
+                        }
+                    }
+                }
+            }
+            //
+            editor.addListener('afterexeccommand', onAfterExecCommand);
+            editor.addListener('keydown', onKeyDown);
+        }
+
+        function actionPaste() {
+            try {
+                var imagefilename = objCommon.ClipboardToImage(objApp.Window.HWND, "");
+                if (!imagefilename)
+                    return false;
+                //
+                var html = "<img border=\"0\" src=\"" + imagefilename + "\" />";
+                editor.execCommand("inserthtml", html);
+                return true;
+            }
+            catch (err) {
+                return false;
+            }
+        }
+
+        //
+        function saveDocument(editor) {
+            var doc = editor.document;
+            //
+            objDocument.UpdateDocument4(getEditorHtml(), editor.document.URL, 0);
+            modified = false;
+        }
+        function OnPluginQueryModified() {
+            return modified;
+        }
+        function OnPluginSave() {
+            saveDocument(editor);
+            //
+            return true;
+        }
+        function onBeforeCloseTab_BaiduEditor() {
+            if (modified) {
+                var msg = loadString("strSaveChanges");
+                msg = msg.replace(/\%1/gi, objDocument.Title);
+                if (6 == objApp.Window.ShowMessage(msg, "Wiz", 0x04 + 0x20)) {
+                    saveDocument(editor);
+                }
+            }
+        }
+
+        function onEditorSetFocus() {
+            if (editor) {
+                editor.focus2();
+            }
+            //
+            return true;
+        }
+    
+    </script>
+
+</body>
+</html>

@@ -312,6 +312,12 @@ var imageUploader = {};
                 }
             }, false );
         }
+		
+		g( "imgUploadLocal" ).onclick = function () {
+			var v = editor.fireEvent( "imgUploadLocalDown" );
+			createPreviewImage( v );
+            g( "url" ).value = v;
+        };
     }
 
     /**

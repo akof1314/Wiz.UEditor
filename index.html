@@ -175,9 +175,15 @@
                     }
                 }
             }
+			
+			function onImageUploadLocal() {
+				var filename = objCommon.SelectWindowsFile(true, "Image Files(*.png;*.jpg;*.gif;*.bmp)|*.png;*.jpg;*.gif;*.bmp|");
+                return filename;
+			}
             //
             editor.addListener('afterexeccommand', onAfterExecCommand);
             editor.addListener('keydown', onKeyDown);
+			editor.addListener('imgUploadLocalDown', onImageUploadLocal);
         }
 
         function actionPaste() {

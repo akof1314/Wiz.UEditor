@@ -59,7 +59,7 @@ td input {
     line-height: 22px;
     border: 1px solid #d7d7d7;
 }
-#imgSearchBtn,#imgSearchReset{
+#imgSearchBtn,#imgSearchReset,#imgUploadLocal{
     width: 80px;
     height: 25px;
     line-height: 25px;

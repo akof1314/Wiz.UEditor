@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=8">
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
     <title></title>
-    
+
     <script type="text/javascript">
         var objApp = window.external;
         var objCommon = objApp.CreateWizObject("WizKMControls.WizCommonUI");
@@ -118,7 +118,7 @@
                     saveDocument(editor);
                 }
             });
-            
+
 			////////////////////////////////////////////////
 			// 增加或减少工具栏按钮，请在这里修改
             var bars =
@@ -177,7 +177,7 @@
                     }
                 }
             }
-			
+
 			function onImageUploadLocal() {
 				var filename = objCommon.SelectWindowsFile(true, "Image Files(*.png;*.jpg;*.gif;*.bmp)|*.png;*.jpg;*.gif;*.bmp|");
                 return filename;
@@ -218,7 +218,10 @@
             //
             return true;
         }
-        function onBeforeCloseTab_BaiduEditor() {
+
+        ////////////////////////////////////////////////
+        // 预防页面被跳转丢失编辑
+        window.onbeforeunload = function () {
             if (modified) {
                 var msg = loadString("strSaveChanges");
                 msg = msg.replace(/\%1/gi, objDocument.Title);
@@ -235,7 +238,7 @@
             //
             return true;
         }
-    
+
     </script>
 
 </body>

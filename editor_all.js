@@ -10071,16 +10071,17 @@ UE.plugins['serialize'] = function () {
                             children:[]
                         }
                     }
-                    node.attributes.word_img = node.attributes.src;
-                    node.attributes.src = me.options.UEDITOR_HOME_URL + 'themes/default/images/spacer.gif';
-                    var flag = parseInt(node.attributes.width)<128||parseInt(node.attributes.height)<43;
-                    node.attributes.style="background:url(" + me.options.UEDITOR_HOME_URL +"themes/default/images/"+(flag?"word.gif":"localimage.png")+") no-repeat center center;border:1px solid #ddd";
+                    // 不需要word图片转存
+                    //node.attributes.word_img = node.attributes.src;
+                    //node.attributes.src = me.options.UEDITOR_HOME_URL + 'themes/default/images/spacer.gif';
+                    //var flag = parseInt(node.attributes.width)<128||parseInt(node.attributes.height)<43;
+                    //node.attributes.style="background:url(" + me.options.UEDITOR_HOME_URL +"themes/default/images/"+(flag?"word.gif":"localimage.png")+") no-repeat center center;border:1px solid #ddd";
                     //node.attributes.style = 'width:395px;height:173px;';
-                    word_img_flag && (word_img_flag.flag = 1);
+                    //word_img_flag && (word_img_flag.flag = 1);
                 }
-                if(browser.ie && browser.version < 7 )
-                    node.attributes.orgSrc = node.attributes.src;
-                node.attributes.data_ue_src = node.attributes.data_ue_src || node.attributes.src;
+                //if(browser.ie && browser.version < 7 )
+                //    node.attributes.orgSrc = node.attributes.src;
+                //node.attributes.data_ue_src = node.attributes.data_ue_src || node.attributes.src;
                 break;
             case 'li':
                 var child = node.children[0];

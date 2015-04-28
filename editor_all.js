@@ -13130,6 +13130,14 @@ UE.commands['snapscreen'] = {
               ,snapscreenImgAlign: 'center'                                //截图的图片默认的排版方式
         });
         var editorOptions = me.options;
+		
+		var v = editor.fireEvent( "captureScreenImage" );
+        if (v.length > 0) {
+            me.execCommand('insertimage', {
+                src: v
+            });
+        };
+        return;
 
         if(!browser.ie){
                 alert('截图功能需要在ie浏览器下使用');
@@ -13168,7 +13176,7 @@ UE.commands['snapscreen'] = {
         }
     },
     queryCommandState: function(){
-        return this.highlight || !browser.ie ? -1 :0;
+        return this.highlight || 0;
     }
 };
 

@@ -132,7 +132,7 @@
                     'DirectionalityLtr', 'DirectionalityRtl', '|', '', 'Indent', '|',
                     'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyJustify', '|',
                     'Link', 'Unlink', 'Anchor', '|', 'ImageNone', 'ImageLeft', 'ImageRight', 'ImageCenter', '|', 'insertimage', 'Emotion', 'Map', 'GMap', 'PageBreak', 'HighlightCode', '|',
-                    'Horizontal', 'Date', 'Time', 'Spechars', '|',
+                    'Horizontal', 'Date', 'Time', 'Spechars','Snapscreen', '|',
                     'InsertTable', 'DeleteTable', 'InsertParagraphBeforeTable', 'InsertRow', 'DeleteRow', 'InsertCol', 'DeleteCol', 'MergeCells', 'MergeRight', 'MergeDown', 'SplittoCells', 'SplittoRows', 'SplittoCols', '|',
                      'Print', 'Preview', 'SearchReplace','Help'
                 ]
@@ -182,10 +182,19 @@
 				var filename = objCommon.SelectWindowsFile(true, "Image Files(*.png;*.jpg;*.gif;*.bmp)|*.png;*.jpg;*.gif;*.bmp|");
                 return filename;
 			}
+
+            function onCaptureScreenImage() {
+                var filename = objCommon.CaptureScreen(0);
+                if (!objCommon.PathFileExists(filename)) {
+                    filename = "";
+                };
+                return filename;
+            }
             //
             editor.addListener('afterexeccommand', onAfterExecCommand);
             editor.addListener('keydown', onKeyDown);
 			editor.addListener('imgUploadLocalDown', onImageUploadLocal);
+            editor.addListener('captureScreenImage', onCaptureScreenImage);
         }
 
         function actionPaste() {

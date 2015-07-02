@@ -7,14 +7,18 @@
 
     <script type="text/javascript">
         var objApp = window.external;
-        var objCommon = objApp.CreateWizObject("WizKMControls.WizCommonUI");
-        //
-        window.UEDITOR_HOME_URL = "file:///" + objApp.GetPluginPathByScriptFileName("baidu_editor.js").replace(/\\/gi, "/");
+        try {
+            var objCommon = objApp.CreateWizObject("WizKMControls.WizCommonUI");
+            //
+            window.UEDITOR_HOME_URL = "file:///" + objApp.GetPluginPathByScriptFileName("baidu_editor.js").replace(/\\/gi, "/");
+        }
+        catch (err) {
+        }
     </script>
 
-    <script type="text/javascript" charset="utf-8" src="editor_config.js"></script>
-
-    <script type="text/javascript" charset="utf-8" src="editor_all.js"></script>
+    <script type="text/javascript" charset="utf-8" src="ueditor.config.js"></script>
+    <script type="text/javascript" charset="utf-8" src="ueditor.all.js"></script>
+    <script type="text/javascript" charset="utf-8" src="lang/zh-cn/zh-cn.js"></script>
 
     <link rel="stylesheet" type="text/css" href="themes/default/ueditor.css" />
     <style type="text/css">
@@ -30,9 +34,12 @@
     <script type="text/javascript">
         //
         function loadString(name) {
-            var pluginPath = objApp.GetPluginPathByScriptFileName("baidu_editor.js");
-            var languageFileName = pluginPath + "plugin.ini";
-            return objApp.LoadStringFromFile(languageFileName, name);
+            if (objDocument) {
+                var pluginPath = objApp.GetPluginPathByScriptFileName("baidu_editor.js");
+                var languageFileName = pluginPath + "plugin.ini";
+                return objApp.LoadStringFromFile(languageFileName, name);
+            }
+            return name;
         }
         //
         function getQueryString(name) {
@@ -87,70 +94,47 @@
         var modified = false;
         var editor = null;
         //
-        if (objDocument) {
-            //
-            document.title = "编辑 " + objDocument.Title.replace(new RegExp(".md", "gi"), "");
-            //
-            var tempPath = objCommon.GetSpecialFolder("TemporaryFolder");
-            var d = new Date();
-            var htmlFileTitle = "baidu_" + d.getTime();
-            var htmlResourcePathFrom = htmlFileTitle + "_files";
-            var htmlResourcePathTo = tempPath + htmlResourcePathFrom;
+        {
+            var htmlText = "";
+            if (objDocument) {
+                //
+                document.title = "编辑 " + objDocument.Title.replace(new RegExp(".md", "gi"), "");
+                //
+                var tempPath = objCommon.GetSpecialFolder("TemporaryFolder");
+                var d = new Date();
+                var htmlFileTitle = "baidu_" + d.getTime();
+                var htmlResourcePathFrom = htmlFileTitle + "_files";
+                var htmlResourcePathTo = tempPath + htmlResourcePathFrom;
 
-            var htmlFileName = tempPath + htmlFileTitle + ".html";
-            //
-            objDocument.SaveToHtml(htmlFileName, 0);
-            //
-            var htmlText = objCommon.LoadTextFromFile(htmlFileName);
-            //
-            var replaceFrom = new RegExp(htmlResourcePathFrom, "gi");
-            htmlText = htmlText.replace(replaceFrom, htmlResourcePathTo);
-            //
-            var strSave = loadString("Save");
-            //
-            var saveButton = new baidu.editor.ui.Button({
-                className: 'edui-for-mybutton',
-                title: strSave,
-                label: strSave,
-                showText: false,
-                onclick: function() {
-                    saveDocument(editor);
-                }
+                var htmlFileName = tempPath + htmlFileTitle + ".html";
+                //
+                objDocument.SaveToHtml(htmlFileName, 0);
+                //
+                htmlText = objCommon.LoadTextFromFile(htmlFileName);
+                //
+                var replaceFrom = new RegExp(htmlResourcePathFrom, "gi");
+                htmlText = htmlText.replace(replaceFrom, htmlResourcePathTo);
+            }
+
+            editor = UE.getEditor('textareaEditor');
+
+            UE.registerUI('button', function(editor, uiName){
+                var strSave = loadString("Save");
+                var saveButton = new UE.ui.Button({
+                    className: 'edui-for-mybutton',
+                    title: strSave,
+                    label: strSave,
+                    showText: false,
+                    onclick: function() {
+                        saveDocument(editor);
+                    }
+                });
+                return saveButton;
+            }, 0);
+
+            editor.ready(function() {
+                editor.setContent(htmlText);
             });
-
-			////////////////////////////////////////////////
-			// 增加或减少工具栏按钮，请在这里修改
-            var bars =
-            [
-                [
-                    saveButton, '|',
-                    'Source', '|', 'Undo', 'Redo', '|',
-                    'Bold', 'Italic', 'Underline', 'StrikeThrough', 'Superscript', 'Subscript', 'RemoveFormat', 'FormatMatch','AutoTypeSet', '|',
-                    'BlockQuote', '|', 'PastePlain', '|', 'ForeColor', 'BackColor', 'InsertOrderedList', 'InsertUnorderedList','SelectAll', 'ClearDoc', '|', 'CustomStyle',
-                    'Paragraph', '|','RowSpacingTop', 'RowSpacingBottom','LineHeight', '|','FontFamily', 'FontSize', '|',
-                    'DirectionalityLtr', 'DirectionalityRtl', '|', '', 'Indent', '|',
-                    'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyJustify', '|',
-                    'Link', 'Unlink', 'Anchor', '|', 'ImageNone', 'ImageLeft', 'ImageRight', 'ImageCenter', '|', 'insertimage', 'Emotion', 'Map', 'GMap', 'PageBreak', 'HighlightCode', '|',
-                    'Horizontal', 'Date', 'Time', 'Spechars','Snapscreen', '|',
-                    'InsertTable', 'DeleteTable', 'InsertParagraphBeforeTable', 'InsertRow', 'DeleteRow', 'InsertCol', 'DeleteCol', 'MergeCells', 'MergeRight', 'MergeDown', 'SplittoCells', 'SplittoRows', 'SplittoCols', '|',
-                     'Print', 'Preview', 'SearchReplace','Help'
-                ]
-            ];
-            //
-            var options = {
-                fullscreen: true,
-                editorFullHtml: htmlText,
-                elementPathEnabled: false,
-                wordCount: false,
-                maximumWords: 100000000,
-                toolbars: bars,
-                focus: true
-            };
-            //
-            editor = new baidu.editor.ui.Editor(options);
-            //
-            editor.render('textareaEditor');
-
             //
             function onAfterExecCommand() {
                 modified = true;
@@ -241,7 +225,7 @@
 
         function onEditorSetFocus() {
             if (editor) {
-                editor.focus2();
+                editor.focus();
             }
             //
             return true;

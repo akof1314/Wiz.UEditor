@@ -2,7 +2,7 @@
         "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-    <title>插入链接</title>
+    <title></title>
     <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
     <script type="text/javascript" src="../internal.js"></script>
     <style type="text/css">
@@ -14,20 +14,20 @@
 <body>
     <table>
         <tr>
-            <td><label for="text"> 文本内容：</label></td>
-            <td><input class="txt" id="text" type="text" disabled="true" value="只支持选中一个链接时生效"/></td>
+            <td><label for="text"> <var id="lang_input_text"></var></label></td>
+            <td><input class="txt" id="text" type="text" disabled="true"/></td>
         </tr>
         <tr>
-            <td><label for="href"> 链接地址：</label></td>
+            <td><label for="href"> <var id="lang_input_url"></var></label></td>
             <td><input class="txt" id="href" type="text" /></td>
         </tr>
         <tr>
-            <td><label for="title"> 标题：</label></td>
+            <td><label for="title"> <var id="lang_input_title"></var></label></td>
             <td><input class="txt" id="title" type="text"/></td>
         </tr>
         <tr>
              <td colspan="2">
-                 <label for="target">是否在新窗口打开：</label>
+                 <label for="target"><var id="lang_input_target"></var></label>
                  <input id="target" type="checkbox"/>
              </td>
         </tr>
@@ -44,14 +44,14 @@
         orgText;
     link = domUtils.findParentByTagName( link, "a", true );
     if(link){
-        url = utils.html(link.getAttribute( 'data_ue_src' ) || link.getAttribute( 'href', 2 ));
+        url = utils.html(link.getAttribute( '_href' ) || link.getAttribute( 'href', 2 ));
 
         if(rangeLink === link && !link.getElementsByTagName('img').length){
             text.removeAttribute('disabled');
             orgText = text.value = link[browser.ie ? 'innerText':'textContent'];
         }else{
             text.setAttribute('disabled','true');
-            text.value = '只支持选中一个链接时生效';
+            text.value = lang.validLink;
         }
 
     }else{
@@ -60,7 +60,7 @@
             text.value = '';
         }else{
             text.setAttribute('disabled','true');
-            text.value = '只支持选中一个链接时生效';
+            text.value = lang.validLink;
         }
 
     }
@@ -72,26 +72,25 @@
     function handleDialogOk(){
         var href =$G('href').value.replace(/^\s+|\s+$/g, '');
         if(href){
-            if(!hrefStartWith(href,["http","/","ftp://"])) {
+            if(!hrefStartWith(href,["http","/","ftp://",'#'])) {
                 href  = "http://" + href;
             }
             var obj = {
                 'href' : href,
                 'target' : $G("target").checked ? "_blank" : '_self',
                 'title' : $G("title").value.replace(/^\s+|\s+$/g, ''),
-                'data_ue_src':href
+                '_href':href
             };
             //修改链接内容的情况太特殊了，所以先做到这里了
             //todo:情况多的时候，做到command里
             if(orgText && text.value != orgText){
-
                 link[browser.ie ? 'innerText' : 'textContent'] =  obj.textValue = text.value;
                 range.selectNode(link).select()
             }
             if(range.collapsed){
                 obj.textValue = text.value;
             }
-            editor.execCommand('link',obj );
+            editor.execCommand('link',utils.clearEmptyAttrs(obj) );
             dialog.close();
         }
     }
@@ -104,8 +103,8 @@
         }
     };
     $G('href').onblur = function(){
-        if(!hrefStartWith(this.value,["http","/","ftp://"])){
-            $G("msg").innerHTML = "<span style='color: red'>您输入的超链接中不包含http等协议名称，默认将为您添加http://前缀</span>";
+        if(!hrefStartWith(this.value,["http","/","ftp://",'#'])){
+            $G("msg").innerHTML = "<span style='color: red'>"+lang.httpPrompt+"</span>";
         }else{
             $G("msg").innerHTML = "";
         }

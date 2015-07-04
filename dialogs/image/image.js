@@ -32,7 +32,7 @@
         if (img && img.tagName && img.tagName.toLowerCase() == 'img') {
             setTabFocus('remote');
         } else {
-            setTabFocus('upload');
+            setTabFocus('remote');
         }
     }
 
@@ -197,6 +197,12 @@
             domUtils.on($G("lock"), 'change', function(){
                 var proportion = parseInt($G("width").value) /parseInt($G("height").value);
                 locker.setAttribute('data-proportion', proportion);
+            });
+            /* 点击本地浏览 */
+            domUtils.on($G('imgUploadLocal'), 'click', function(){
+                var v = editor.fireEvent("imgUploadLocalDown");
+                $G("url").value = v;
+                updatePreview();
             });
 
             function updatePreview(){

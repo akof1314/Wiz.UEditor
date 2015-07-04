@@ -760,6 +760,7 @@
     dislay: block;
 }
 
+#imgUploadLocal,
 #search #searchBtn,
 #search #searchReset {
     display: inline-block;
@@ -788,6 +789,7 @@
     border-color: #285e8e;
     background-color: #3b97d7;
 }
+#imgUploadLocal,
 #search #searchReset {
     color: #333;
     border-color: #ccc;
@@ -796,6 +798,7 @@
 #search #searchBtn:hover {
     background-color: #3276b1;
 }
+#imgUploadLocal:hover,
 #search #searchReset:hover {
     background-color: #eee;
 }

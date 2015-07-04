@@ -10,7 +10,7 @@
         try {
             var objCommon = objApp.CreateWizObject("WizKMControls.WizCommonUI");
             //
-            window.UEDITOR_HOME_URL = "file:///" + objApp.GetPluginPathByScriptFileName("baidu_editor.js").replace(/\\/gi, "/");
+            window.UEDITOR_HOME_URL = objApp.GetPluginPathByScriptFileName("baidu_editor.js").replace(/\\/gi, "/");
         }
         catch (err) {
         }
@@ -20,7 +20,6 @@
     <script type="text/javascript" charset="utf-8" src="ueditor.all.js"></script>
     <script type="text/javascript" charset="utf-8" src="lang/zh-cn/zh-cn.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="themes/default/ueditor.css" />
     <style type="text/css">
         .edui-for-mybutton .edui-icon
         {

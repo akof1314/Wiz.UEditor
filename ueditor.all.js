@@ -23273,6 +23273,14 @@ UE.plugin.register('snapscreen', function (){
              */
             'snapscreen':{
                 execCommand:function (cmd) {
+                    var v = editor.fireEvent( "captureScreenImage" );
+                    if (v.length > 0) {
+                        me.execCommand('insertimage', {
+                            src: v
+                        });
+                    };
+                    return;
+
                     var url, local, res;
                     var lang = me.getLang("snapScreen_plugin");
 
@@ -23922,7 +23930,7 @@ UE.plugin.register('autosave', function (){
                 if (!me.getOpt('enableAutoSave')) {
                     return;
                 }
-                
+
                 if ( !saveKey ) {
                     return;
                 }

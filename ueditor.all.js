@@ -14443,6 +14443,7 @@ UE.plugin.register('copy', function () {
     return {
         bindEvents: {
             'ready': function () {
+                return;
                 if (!browser.ie) {
                     if (window.ZeroClipboard) {
                         initZeroClipboard();

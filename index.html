@@ -169,7 +169,19 @@
                 var filename = objCommon.CaptureScreen(0);
                 if (!objCommon.PathFileExists(filename)) {
                     filename = "";
-                };
+                }
+                return filename;
+            }
+
+            function onSaveCanvasImage(type, strText) {
+                var filename = objCommon.GetATempFileName(".png");
+                try {
+                    objCommon.SaveTextToFile(filename, strText, "ansi");
+                }
+                catch (err) {
+                    alert(err);
+                    return "";
+                }
                 return filename;
             }
             //
@@ -177,6 +189,7 @@
             editor.addListener('keydown', onKeyDown);
 			editor.addListener('imgUploadLocalDown', onImageUploadLocal);
             editor.addListener('captureScreenImage', onCaptureScreenImage);
+            editor.addListener('saveCanvasImageWiz', onSaveCanvasImage);
         }
 
         function actionPaste() {

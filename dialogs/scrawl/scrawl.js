@@ -631,6 +631,20 @@ function exec(scrawlObj) {
         addMaskLayer(lang.scrawlUpLoading);
         var base64 = scrawlObj.getCanvasData();
         if (!!base64) {
+            // 直接保存到本地
+            var fileName = editor.fireEvent("saveCanvasImageWiz", base64);
+            if (fileName != "") {
+                var imgObj = {},
+                url = fileName;
+                imgObj.src = url;
+                imgObj._src = url;
+                imgObj.alt = '';
+                imgObj.title = '';
+                editor.execCommand("insertImage", imgObj);
+            }
+            dialog.close();
+            return;
+
             var options = {
                 timeout:100000,
                 onsuccess:function (xhr) {

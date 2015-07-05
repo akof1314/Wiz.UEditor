@@ -66,7 +66,7 @@
 
 
         function getEditorHtml() {
-            return "<!DOCTYPE html>" + editor.document.documentElement.outerHTML;
+            return "<!DOCTYPE html>" + editor.getContent();
         }
 
         //
@@ -209,8 +209,7 @@
 
         //
         function saveDocument(editor) {
-            var doc = editor.document;
-            //
+            console.log(getEditorHtml());
             objDocument.UpdateDocument4(getEditorHtml(), editor.document.URL, 0);
             modified = false;
         }

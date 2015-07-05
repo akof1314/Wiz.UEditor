@@ -14018,6 +14018,8 @@ UE.plugin.register('wordimage',function(){
             }
         },
         inputRule : function (root) {
+            // 不需要word图片转存
+            return;
             utils.each(root.getNodesByTagName('img'), function (img) {
                 var attrs = img.attrs,
                     flag = parseInt(attrs.width) < 128 || parseInt(attrs.height) < 43,

@@ -6917,9 +6917,16 @@ var fillCharReg = new RegExp(domUtils.fillChar, 'g');
                     frameborder: "0",
                     //先注释掉了，加的原因忘记了，但开启会直接导致全屏模式下内容多时不会出现滚动条
 //                    scrolling :'no',
-                    src: 'javascript:void(function(){document.open();' + (options.customDomain && document.domain != location.hostname ?  'document.domain="' + document.domain + '";' : '') +
-                        'document.write("' + html + '");document.close();}())'
+                    //src: 'javascript:void(function(){document.open();' + (options.customDomain && document.domain != location.hostname ?  'document.domain="' + document.domain + '";' : '') +
+                    //    'document.write("' + html + '");document.close();}())'
                 }));
+                // 为知直接写入
+                var docIframe = container.firstChild.contentWindow.document;
+                docIframe.open();
+                docIframe.write(options.editorFullHtml);
+                docIframe.close();
+                this._setup(docIframe);
+                
                 container.style.overflow = 'hidden';
                 //解决如果是给定的百分比，会导致高度算不对的问题
                 setTimeout(function(){

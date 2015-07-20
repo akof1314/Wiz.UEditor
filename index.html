@@ -75,7 +75,7 @@
 
 
         function getEditorHtml() {
-            return "<!DOCTYPE html>" + editor.getContent();
+            return "<!DOCTYPE html>" + editor.getAllHtml();
         }
 
         //
@@ -103,7 +103,7 @@
         var editor = null;
         //
         {
-            var htmlText = "";
+            var htmlText = "<p>s</p>";
             if (objDocument) {
                 //
                 document.title = "编辑 " + objDocument.Title.replace(new RegExp(".md", "gi"), "");
@@ -124,7 +124,11 @@
                 htmlText = htmlText.replace(replaceFrom, htmlResourcePathTo);
             }
 
-            editor = UE.getEditor('textareaEditor');
+            var options = {
+                editorFullHtml: htmlText
+            };
+
+            editor = UE.getEditor('textareaEditor', options);
 
             UE.registerUI('button', function(editor, uiName){
                 var strSave = loadString("Save");
@@ -140,9 +144,6 @@
                 return saveButton;
             }, 0);
 
-            editor.ready(function() {
-                editor.setContent(htmlText);
-            });
             //
             function onAfterExecCommand() {
                 modified = true;

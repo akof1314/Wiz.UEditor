@@ -13715,11 +13715,11 @@ UE.plugin.register('anchor', function (){
     return {
         bindEvents:{
             'ready':function(){
-                utils.cssRule('anchor',
-                    '.anchorclass{background: url(\''
-                        + this.options.themePath
-                        + this.options.theme +'/images/anchor.gif\') no-repeat scroll left center transparent;cursor: auto;display: inline-block;height: 16px;width: 15px;}',
-                    this.document);
+                // utils.cssRule('anchor',
+                //     '.anchorclass{background: url(\''
+                //         + this.options.themePath
+                //         + this.options.theme +'/images/anchor.gif\') no-repeat scroll left center transparent;cursor: auto;display: inline-block;height: 16px;width: 15px;}',
+                //     this.document);
             }
         },
        outputRule: function(root){
@@ -21800,10 +21800,10 @@ UE.plugins['tablesort'] = function () {
 
     me.ready(function () {
         //添加表格可排序的样式
-        utils.cssRule('tablesort',
-            'table.sortEnabled tr.firstRow th,table.sortEnabled tr.firstRow td{padding-right:20px;background-repeat: no-repeat;background-position: center right;' +
-                '   background-image:url(' + me.options.themePath + me.options.theme + '/images/sortable.png);}',
-            me.document);
+        // utils.cssRule('tablesort',
+        //     'table.sortEnabled tr.firstRow th,table.sortEnabled tr.firstRow td{padding-right:20px;background-repeat: no-repeat;background-position: center right;' +
+        //         '   background-image:url(' + me.options.themePath + me.options.theme + '/images/sortable.png);}',
+        //     me.document);
 
         //做单元格合并操作时,清除可排序标识
         me.addListener("afterexeccommand", function (type, cmd) {
@@ -23852,15 +23852,15 @@ UE.plugin.register('autoupload', function (){
                     });
 
                     //设置loading的样式
-                    utils.cssRule('loading',
-                        '.loadingclass{display:inline-block;cursor:default;background: url(\''
-                            + this.options.themePath
-                            + this.options.theme +'/images/loading.gif\') no-repeat center center transparent;border:1px solid #cccccc;margin-left:1px;height: 22px;width: 22px;}\n' +
-                            '.loaderrorclass{display:inline-block;cursor:default;background: url(\''
-                            + this.options.themePath
-                            + this.options.theme +'/images/loaderror.png\') no-repeat center center transparent;border:1px solid #cccccc;margin-right:1px;height: 22px;width: 22px;' +
-                            '}',
-                        this.document);
+                    // utils.cssRule('loading',
+                    //     '.loadingclass{display:inline-block;cursor:default;background: url(\''
+                    //         + this.options.themePath
+                    //         + this.options.theme +'/images/loading.gif\') no-repeat center center transparent;border:1px solid #cccccc;margin-left:1px;height: 22px;width: 22px;}\n' +
+                    //         '.loaderrorclass{display:inline-block;cursor:default;background: url(\''
+                    //         + this.options.themePath
+                    //         + this.options.theme +'/images/loaderror.png\') no-repeat center center transparent;border:1px solid #cccccc;margin-right:1px;height: 22px;width: 22px;' +
+                    //         '}',
+                    //     this.document);
                 }
             }
         }
@@ -24559,15 +24559,15 @@ UE.plugin.register('simpleupload', function (){
         bindEvents:{
             'ready': function() {
                 //设置loading的样式
-                utils.cssRule('loading',
-                    '.loadingclass{display:inline-block;cursor:default;background: url(\''
-                    + this.options.themePath
-                    + this.options.theme +'/images/loading.gif\') no-repeat center center transparent;border:1px solid #cccccc;margin-right:1px;height: 22px;width: 22px;}\n' +
-                    '.loaderrorclass{display:inline-block;cursor:default;background: url(\''
-                    + this.options.themePath
-                    + this.options.theme +'/images/loaderror.png\') no-repeat center center transparent;border:1px solid #cccccc;margin-right:1px;height: 22px;width: 22px;' +
-                    '}',
-                    this.document);
+                // utils.cssRule('loading',
+                //     '.loadingclass{display:inline-block;cursor:default;background: url(\''
+                //     + this.options.themePath
+                //     + this.options.theme +'/images/loading.gif\') no-repeat center center transparent;border:1px solid #cccccc;margin-right:1px;height: 22px;width: 22px;}\n' +
+                //     '.loaderrorclass{display:inline-block;cursor:default;background: url(\''
+                //     + this.options.themePath
+                //     + this.options.theme +'/images/loaderror.png\') no-repeat center center transparent;border:1px solid #cccccc;margin-right:1px;height: 22px;width: 22px;' +
+                //     '}',
+                //     this.document);
             },
             /* 初始化简单上传按钮 */
             'simpleuploadbtnready': function(type, container) {

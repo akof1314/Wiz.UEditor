@@ -392,7 +392,7 @@ var scrawl = function (options) {
                 context.fillRect(0, 0, canvas.width, canvas.height);
             }
             try {
-                return canvas.toDataURL("image/png").substring(22);
+                return canvas.toDataURL("image/png");
             } catch (e) {
                 return "";
             }
@@ -631,17 +631,8 @@ function exec(scrawlObj) {
         addMaskLayer(lang.scrawlUpLoading);
         var base64 = scrawlObj.getCanvasData();
         if (!!base64) {
-            // 直接保存到本地
-            var fileName = editor.fireEvent("saveCanvasImageWiz", base64);
-            if (fileName != "") {
-                var imgObj = {},
-                url = fileName;
-                imgObj.src = url;
-                imgObj._src = url;
-                imgObj.alt = '';
-                imgObj.title = '';
-                editor.execCommand("insertImage", imgObj);
-            }
+            // 直接插入到页面            
+            editor.execCommand("inserthtml", '<img src="'+ base64 + '" />');
             dialog.close();
             return;
 

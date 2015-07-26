@@ -24,10 +24,7 @@
     <!-- KityFormula 插件需要加载的js -->
     <script type="text/javascript" charset="utf-8" src="third-party/kityformula-plugin/addKityFormulaDialog.js"></script>
     <script type="text/javascript" charset="utf-8" src="third-party/kityformula-plugin/getKfContent.js"></script>
-    <script type="text/javascript" charset="utf-8" src="third-party/kityformula-plugin/defaultFilterFix.js"></script>
-
-    <script type="text/javascript" charset="utf-8" src="third-party/SyntaxHighlighter/shCore.js"></script>
-    <link rel="stylesheet" type="text/css" href="third-party/SyntaxHighlighter/shCoreDefault.css"/>
+    <script type="text/javascript" charset="utf-8" src="third-party/kityformula-plugin/defaultFilterFix.js"></script>    
 
     <style type="text/css">
         .edui-for-mybutton .edui-icon
@@ -43,8 +40,7 @@
         //
         function loadString(name) {
             if (objDocument) {
-                var pluginPath = objApp.GetPluginPathByScriptFileName("baidu_editor.js");
-                var languageFileName = pluginPath + "plugin.ini";
+                var languageFileName = getPluginPath() + "plugin.ini";
                 return objApp.LoadStringFromFile(languageFileName, name);
             }
             return name;
@@ -75,7 +71,9 @@
 
 
         function getEditorHtml() {
-            return "<!DOCTYPE html>" + editor.getAllHtml();
+            var fullHtml = editor.getAllHtml();
+            fullHtml = saveSyntaxHighlighter(fullHtml);
+            return "<!DOCTYPE html>" + fullHtml;
         }
 
         //
@@ -123,6 +121,8 @@
                 var replaceFrom = new RegExp(htmlResourcePathFrom, "gi");
                 htmlText = htmlText.replace(replaceFrom, htmlResourcePathTo);
             }
+
+            htmlText = loadSyntaxHighlighter(htmlText);
 
             var options = {
                 editorFullHtml: htmlText
@@ -219,8 +219,7 @@
 
         //
         function saveDocument(editor) {
-            console.log(getEditorHtml());
-            objDocument.UpdateDocument4(getEditorHtml(), editor.document.URL, 0);
+            objDocument.UpdateDocument3(getEditorHtml(), 0x0002);
             modified = false;
         }
         function OnPluginQueryModified() {
@@ -230,6 +229,48 @@
             saveDocument(editor);
             //
             return true;
+        }
+        function getPluginPath() {
+            var pluginPath = "";
+            try {
+                pluginPath = objApp.GetPluginPathByScriptFileName("baidu_editor.js");
+            }
+            catch (err) {
+            }
+            return pluginPath;
+        }
+
+        // 保存时处理高亮
+        function saveSyntaxHighlighter (fullHtml) {
+            if (fullHtml.indexOf('<pre class="brush') != -1) {
+                if (fullHtml.indexOf('/shCore.js') == -1) {
+                    var pluginPath = getPluginPath();
+                    var addHtml = '';
+
+                    if (fullHtml.indexOf('/shCoreDefault.css') == -1) {
+                        addHtml = '<link rel="stylesheet" type="text/css" href="' +
+                        pluginPath +
+                        'third-party/SyntaxHighlighter/shCoreDefault.css"/>';
+                    }
+
+                    addHtml = addHtml + 
+                    '<script type="text/javascript" charset="utf-8" src="' +
+                    pluginPath +
+                    'third-party/SyntaxHighlighter/shCore.js"/></' + 'script>' +
+                    '<script type="text/javascript">SyntaxHighlighter.all();</' + 'script>';
+
+                    var endHead = fullHtml.indexOf('</head>');
+                    fullHtml = fullHtml.substring(0, endHead) + addHtml + fullHtml.substring(endHead);
+                }
+            }
+            return fullHtml;
+        }
+
+        // 加载时处理高亮
+        function loadSyntaxHighlighter (htmlText) {
+            htmlText = htmlText.replace('<script type="text/javascript">SyntaxHighlighter.all();</' + 'script>', "");
+            htmlText = htmlText.replace('/shCore.js', "");
+            return htmlText;
         }
 
         ////////////////////////////////////////////////

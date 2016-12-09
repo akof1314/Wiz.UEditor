@@ -222,7 +222,9 @@
             modified = false;
         }
         function OnPluginQueryModified() {
-            return modified;
+            var modifiedTemp = modified;
+            modified = false; // 防止再次调用window.onbeforeunload
+            return modifiedTemp;
         }
         function OnPluginSave() {
             saveDocument(editor);

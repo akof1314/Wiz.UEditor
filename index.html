@@ -164,6 +164,9 @@
                         }
                     }
                 }
+                else if (!e.ctrlKey && !e.altKey && !e.shiftKey && e.keyCode == 112) { // F1
+                    editor.execCommand("inserthtml", "&nbsp;&nbsp;&nbsp;&nbsp;");
+                }
             }
 
 			function onImageUploadLocal() {

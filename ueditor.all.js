@@ -17940,13 +17940,15 @@ UE.plugins['video'] = function (){
     UETable.prototype = {
         getMaxRows:function () {
             var rows = this.table.rows, maxLen = 1;
-            for (var i = 0, row; row = rows[i]; i++) {
-                var currentMax = 1;
-                for (var j = 0, cj; cj = row.cells[j++];) {
-                    currentMax = Math.max(cj.rowSpan || 1, currentMax);
-                }
-                maxLen = Math.max(currentMax + i, maxLen);
-            }
+			if (rows) {
+				for (var i = 0, row; row = rows[i]; i++) {
+					var currentMax = 1;
+					for (var j = 0, cj; cj = row.cells[j++];) {
+						currentMax = Math.max(cj.rowSpan || 1, currentMax);
+					}
+					maxLen = Math.max(currentMax + i, maxLen);
+				}
+			}            
             return maxLen;
         },
         /**
@@ -17954,24 +17956,27 @@ UE.plugins['video'] = function (){
          */
         getMaxCols:function () {
             var rows = this.table.rows, maxLen = 0, cellRows = {};
-            for (var i = 0, row; row = rows[i]; i++) {
-                var cellsNum = 0;
-                for (var j = 0, cj; cj = row.cells[j++];) {
-                    cellsNum += (cj.colSpan || 1);
-                    if (cj.rowSpan && cj.rowSpan > 1) {
-                        for (var k = 1; k < cj.rowSpan; k++) {
-                            if (!cellRows['row_' + (i + k)]) {
-                                cellRows['row_' + (i + k)] = (cj.colSpan || 1);
-                            } else {
-                                cellRows['row_' + (i + k)]++
-                            }
-                        }
+			if (rows) {
+				for (var i = 0, row; row = rows[i]; i++) {
+					var cellsNum = 0;
+					for (var j = 0, cj; cj = row.cells[j++];) {
+						cellsNum += (cj.colSpan || 1);
+						if (cj.rowSpan && cj.rowSpan > 1) {
+							for (var k = 1; k < cj.rowSpan; k++) {
+								if (!cellRows['row_' + (i + k)]) {
+									cellRows['row_' + (i + k)] = (cj.colSpan || 1);
+								} else {
+									cellRows['row_' + (i + k)]++
+								}
+							}
 
-                    }
-                }
-                cellsNum += cellRows['row_' + i] || 0;
-                maxLen = Math.max(cellsNum, maxLen);
-            }
+						}
+					}
+					cellsNum += cellRows['row_' + i] || 0;
+					maxLen = Math.max(cellsNum, maxLen);
+				}
+			}
+            
             return maxLen;
         },
         getCellColIndex:function (cell) {
@@ -18104,6 +18109,7 @@ UE.plugins['video'] = function (){
             this.selectedTds = [];
             this.cellsRange = {};
             this.indexTable = [];
+            if (!this.table.rows) { return; }
             var rows = this.table.rows,
                 rowsNum = this.getMaxRows(),
                 dNum = rowsNum - rows.length,

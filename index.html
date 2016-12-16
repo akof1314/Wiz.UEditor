@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="X-UA-Compatible" content="IE=8">
@@ -26,6 +26,7 @@
     <script type="text/javascript" charset="utf-8" src="third-party/kityformula-plugin/getKfContent.js"></script>
     <script type="text/javascript" charset="utf-8" src="third-party/kityformula-plugin/defaultFilterFix.js"></script>
 
+    <script type="text/javascript" charset="utf-8" src="third-party/SyntaxHighlighter/shCore.js"></script>
     <style type="text/css">
         .edui-for-mybutton .edui-icon
         {
@@ -34,6 +35,7 @@
     </style>
 </head>
 <body>
+    <div id="presavewiz" style="display:none;"></div>
     <textarea id="textareaEditor" cols="1"></textarea>
 
     <script type="text/javascript">
@@ -68,11 +70,6 @@
             }
             return '';
         };
-
-
-        function getEditorHtml() {
-            return "<!DOCTYPE html>" + editor.getAllHtml();
-        }
 
         //
         var guid = getQueryString("guid");
@@ -218,14 +215,16 @@
 
         //
         function saveDocument(editor) {
-            objDocument.UpdateDocument3(getEditorHtml(), 0);
+            var fullHtml = getEditorHtml();
+            objDocument.UpdateDocument3(fullHtml, 0);
             modified = false;
         }
-        function OnPluginQueryModified() {
+        // 注释下面，统一用onbeforeunload
+        /*function OnPluginQueryModified() {
             var modifiedTemp = modified;
             modified = false; // 防止再次调用window.onbeforeunload
             return modifiedTemp;
-        }
+        }*/
         function OnPluginSave() {
             saveDocument(editor);
             //
@@ -239,6 +238,52 @@
             catch (err) {
             }
             return pluginPath;
+        }
+
+        // 保存时处理高亮
+        function getEditorHtml () {
+            var fullHtml = editor.getAllHtml();
+            fullHtml = "<!DOCTYPE html>" + fullHtml;
+
+            if (fullHtml.indexOf('<pre class="brush') == -1) {
+                return fullHtml;
+            }
+
+            var preElem = document.getElementById("presavewiz");
+            if (!preElem) {
+                return fullHtml;
+            }
+
+            var content = editor.getContent();
+            preElem.innerHTML = content;
+
+            var pres = preElem.getElementsByTagName('pre');
+            if(pres.length){
+                for (var i = 0; i < pres.length; i++) {
+                    var pi = pres[i];
+                    if(pi && /brush/i.test(pi.className)){
+                        SyntaxHighlighter.highlight(pi);
+                    }
+                }
+            }
+
+            content = preElem.innerHTML;
+            preElem.innerHTML = "";
+
+            var startBody = fullHtml.indexOf('<body');
+            var headHtml = fullHtml.substring(0, startBody);
+
+            if (headHtml.indexOf('/shCoreDefault') == -1) {
+                var addHtml = '<link rel="stylesheet" type="text/css" href="' +
+                    getPluginPath() + 'third-party/SyntaxHighlighter/shCoreDefault.css"/>';
+
+                var endHead = headHtml.indexOf('</head>');
+                headHtml = headHtml.substring(0, endHead) + addHtml + headHtml.substring(endHead);
+            }
+
+            fullHtml = headHtml + '<body ' + (UE.browser.ie && UE.browser.version < 9 ? 'class="view"' : '') + '>' + content + '</body></html>';
+
+            return fullHtml;
         }
 
         ////////////////////////////////////////////////

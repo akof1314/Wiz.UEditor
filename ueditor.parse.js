@@ -346,13 +346,13 @@ UE.parse.register('insertcode',function(utils){
                 jsurl = this.highlightJsUrl;
                 cssurl = this.highlightCssUrl;
             }
-            utils.loadFile(document,{
+            /*utils.loadFile(document,{
                 id : "syntaxhighlighter_css",
                 tag : "link",
                 rel : "stylesheet",
                 type : "text/css",
                 href : cssurl
-            });
+            });*/
             utils.loadFile(document,{
                 id : "syntaxhighlighter_js",
                 src : jsurl,

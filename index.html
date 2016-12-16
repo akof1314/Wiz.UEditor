@@ -98,23 +98,26 @@
         {
             var htmlText = "";
             if (objDocument) {
-                //
+                // 防止md笔记出错
                 document.title = "编辑 " + objDocument.Title.replace(new RegExp(".md", "gi"), "");
-                //
-                var tempPath = objCommon.GetSpecialFolder("TemporaryFolder");
-                var d = new Date();
-                var htmlFileTitle = "baidu_" + d.getTime();
-                var htmlResourcePathFrom = htmlFileTitle + "_files";
-                var htmlResourcePathTo = tempPath + htmlResourcePathFrom;
 
-                var htmlFileName = tempPath + htmlFileTitle + ".html";
-                //
-                objDocument.SaveToHtml(htmlFileName, 0);
-                //
-                htmlText = objCommon.LoadTextFromFile(htmlFileName);
-                //
-                var replaceFrom = new RegExp(htmlResourcePathFrom, "gi");
-                htmlText = htmlText.replace(replaceFrom, htmlResourcePathTo);
+                var tempPath = objCommon.GetSpecialFolder("TemporaryFolder");
+                tempPath += "ueditor_temp/";
+                objCommon.CreateDirectory(tempPath);
+                tempPath += objDocument.GUID + "/";
+                objCommon.CreateDirectory(tempPath);
+
+                var tempFileName = objDocument.GUID;
+                var tempFileDir = tempFileName + "_files";
+                objCommon.CreateDirectory(tempPath + tempFileDir + "/");
+
+                var tempFile = tempPath + tempFileName + ".html";
+                objDocument.SaveToHtml(tempFile, 0);
+                htmlText = objCommon.LoadTextFromFile(tempFile);
+
+                var replaceFrom = new RegExp(tempFileDir, "gi");
+                var tempFileDirAbsolute = tempPath + tempFileDir;
+                htmlText = htmlText.replace(replaceFrom, tempFileDirAbsolute);
             }
 
             var options = {

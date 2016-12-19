@@ -55,6 +55,10 @@
 <script src="kityformula/js/kity-formula-parser.all.min.js"></script>
 <script src="kityformula/js/kityformula-editor.all.min.js"></script>
 <script>
+    SVGElement.prototype.getTransformToElement = SVGElement.prototype.getTransformToElement || function(toElement) {
+        return toElement.getScreenCTM().inverse().multiply(this.getScreenCTM());
+    };
+    
     jQuery( function ($) {
 
         if ( document.body.addEventListener ) {

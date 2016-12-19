@@ -222,15 +222,13 @@
             objDocument.UpdateDocument3(fullHtml, 0);
             modified = false;
         }
-        // 注释下面，统一用onbeforeunload
-        /*function OnPluginQueryModified() {
+        function OnPluginQueryModified() {
             var modifiedTemp = modified;
             modified = false; // 防止再次调用window.onbeforeunload
             return modifiedTemp;
-        }*/
+        }
         function OnPluginSave() {
             saveDocument(editor);
-            //
             return true;
         }
         function getPluginPath() {
@@ -292,15 +290,19 @@
         ////////////////////////////////////////////////
         // 预防页面被跳转丢失编辑
         window.onbeforeunload = function () {
+            onBeforeCloseTab_WizUEditor();
+        }
+
+        ////////////////////////////////////////////////
+        // 关闭标签前的事件
+        function onBeforeCloseTab_WizUEditor() {
             if (modified) {
-                var msg = loadString("strSaveChanges");
-                msg = msg.replace(/\%1/gi, objDocument.Title);
-                if (6 == objApp.Window.ShowMessage(msg, "Wiz", 0x04 + 0x20)) {
-                    saveDocument(editor);
+                modified = false;
+                if (6 == objApp.Window.ShowMessage("是否将更改保存到 " + objDocument.Title + " ？", "{p}", 0x04 + 0x20)) {
+                    saveDocument();
                 }
             }
         }
-
     </script>
 
 </body>

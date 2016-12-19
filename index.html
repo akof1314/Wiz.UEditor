@@ -10,7 +10,7 @@
         try {
             var objCommon = objApp.CreateWizObject("WizKMControls.WizCommonUI");
             //
-            window.UEDITOR_HOME_URL = objApp.GetPluginPathByScriptFileName("baidu_editor.js").replace(/\\/gi, "/");
+            window.UEDITOR_HOME_URL = objApp.GetPluginPathByScriptFileName("wiz_ueditor.js").replace(/\\/gi, "/");
         }
         catch (err) {
         }
@@ -236,7 +236,7 @@
         function getPluginPath() {
             var pluginPath = "";
             try {
-                pluginPath = objApp.GetPluginPathByScriptFileName("baidu_editor.js");
+                pluginPath = objApp.GetPluginPathByScriptFileName("wiz_ueditor.js");
             }
             catch (err) {
             }

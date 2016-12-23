@@ -15,6 +15,9 @@ UE.registerUI('kityminder', function(editor, uiname){
         // dialog 外围 css
         cssRules: 'width:783px; height: 386px;',
 
+        // 全屏方便编辑
+        fullscreen: true,
+
         //如果给出了buttons就代表dialog有确定和取消
         buttons:[
             {

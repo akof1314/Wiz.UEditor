@@ -33,6 +33,9 @@
 <body ng-app="kityminderDemo" ng-controller="MainController">
 <kityminder-editor on-init="initEditor(editor, minder)"></kityminder-editor>
 </body>
+<!--页面中一定要引入internal.js为了能直接使用当前打开dialog的实例变量-->
+<!--internal.js默认是放到dialogs目录下的-->
+<script type="text/javascript" src="../../dialogs/internal.js"></script>
 
 <!-- bower:js -->
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
@@ -60,17 +63,36 @@
 
 
 <script>
+    var editoru = editor;
+    var rng = editoru.selection.getRange(),
+        img = rng.getClosedNode(),
+        imgJson = img && $(img).attr('data-mind-json');
+
     angular.module('kityminderDemo', ['kityminderEditor'])
             .config(function (configProvider) {
                 //configProvider.set('imageUpload', '../server/imageUpload.php');
             })
             .controller('MainController', function($scope) {
-                $scope.initEditor = function(editor, minder) {
-                    window.editor = editor;
+                $scope.initEditor = function(kmeditor, minder) {
+                    window.editor = kmeditor;
                     window.minder = minder;
+
+                    if (imgJson) {
+                        kmeditor.minder.importJson(JSON.parse(imgJson));
+                    }
                 };
             });
 
+    dialog.onok = function(){
+        editor.minder.exportData("png").then(function(data) {
+            editor.minder.exportData("json").then(function(data2) {
+                editoru.execCommand('inserthtml', '<img src="'+ data +'" data-mind-json="' + utils.unhtml(data2) + '" />');
+                dialog.close();
+            });
+        });
+
+        return false;
+    }
 </script>
 
 </html>

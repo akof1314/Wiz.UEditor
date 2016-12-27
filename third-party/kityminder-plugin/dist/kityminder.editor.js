@@ -2,8 +2,8 @@
  * ====================================================
  * kityminder-editor - v1.0.56 - 2016-12-22
  * https://github.com/fex-team/kityminder-editor
- * GitHub: https://github.com/fex-team/kityminder-editor 
- * Copyright (c) 2016 ; Licensed 
+ * GitHub: https://github.com/fex-team/kityminder-editor
+ * Copyright (c) 2016 ; Licensed
  * ====================================================
  */
 
@@ -173,14 +173,14 @@ _p[5] = {
 		 * @method getMimeTypeProtocol  	public
 		 * @param  {String} type 数据类型
 		 * @param  {String} text|undefiend  文本内容或不传入
-		 * @return {String|Function} 
-		 * @example 
+		 * @return {String|Function}
+		 * @example
 		 * 			text若不传入则直接返回对应数据格式的处理(process)方法
 		 * 			若传入文本则直接调用对应的process方法进行处理，此时返回处理后的内容
 		 * 			var m = new MimeType();
 		 * 			var kmprocess = m.getMimeTypeProtocol('application/km');
 		 * 			kmprocess("123") === m.getMimeTypeProtocol('application/km', "123");
-		 * 			
+		 *
 		 */
             this.getMimeTypeProtocol = function(type, text) {
                 var mimetype = MIMETYPE[type] || false;
@@ -631,7 +631,7 @@ _p[9] = {
             };
             /**
          * 添加状态跳转监视器
-         * 
+         *
          * @param {string} condition
          *     监视的时机
          *         "* => *" （默认）
@@ -2199,7 +2199,7 @@ angular.module('kityminderEditor').run(['$templateCache', function($templateCach
 
 
   $templateCache.put('ui/directive/topTab/topTab.html',
-    "<tabset><tab heading=\"{{ 'idea' | lang: 'ui/tabs'; }}\" ng-click=\"toggleTopTab('idea')\" select=\"setCurTab('idea')\"><undo-redo editor=\"editor\"></undo-redo><append-node minder=\"minder\"></append-node><arrange minder=\"minder\"></arrange><operation minder=\"minder\"></operation><hyper-link minder=\"minder\"></hyper-link><image-btn minder=\"minder\"></image-btn><note-btn minder=\"minder\"></note-btn><priority-editor minder=\"minder\"></priority-editor><progress-editor minder=\"minder\"></progress-editor><resource-editor minder=\"minder\"></resource-editor></tab><tab heading=\"{{ 'appearence' | lang: 'ui/tabs'; }}\" ng-click=\"toggleTopTab('appearance')\" select=\"setCurTab('appearance')\"><template-list minder=\"minder\" class=\"inline-directive\"></template-list><theme-list minder=\"minder\"></theme-list><layout minder=\"minder\" class=\"inline-directive\"></layout><style-operator minder=\"minder\" class=\"inline-directive\"></style-operator><font-operator minder=\"minder\" class=\"inline-directive\"></font-operator></tab><tab heading=\"{{ 'view' | lang: 'ui/tabs'; }}\" ng-click=\"toggleTopTab('view')\" select=\"setCurTab('view')\"><expand-level minder=\"minder\"></expand-level><select-all minder=\"minder\"></select-all><search-btn minder=\"minder\"></search-btn></tab></tabset>"
+    "<tabset><tab heading=\"{{ 'idea' | lang: 'ui/tabs'; }}\" ng-click=\"toggleTopTab('idea')\" select=\"setCurTab('idea')\"><undo-redo editor=\"editor\"></undo-redo><append-node minder=\"minder\"></append-node><arrange minder=\"minder\"></arrange><operation minder=\"minder\"></operation><hyper-link minder=\"minder\"></hyper-link><image-btn minder=\"minder\"></image-btn><note-btn minder=\"minder\"></note-btn><priority-editor minder=\"minder\"></priority-editor><progress-editor minder=\"minder\"></progress-editor><resource-editor minder=\"minder\"></resource-editor></tab><tab heading=\"{{ 'appearence' | lang: 'ui/tabs'; }}\" ng-click=\"toggleTopTab('appearance')\" select=\"setCurTab('appearance')\"><template-list minder=\"minder\" class=\"inline-directive\"></template-list><theme-list minder=\"minder\"></theme-list><layout minder=\"minder\" class=\"inline-directive\"></layout><style-operator minder=\"minder\" class=\"inline-directive\"></style-operator><font-operator minder=\"minder\" class=\"inline-directive\"></font-operator></tab><tab heading=\"{{ 'view' | lang: 'ui/tabs'; }}\" ng-click=\"toggleTopTab('view')\" select=\"setCurTab('view')\"><expand-level minder=\"minder\"></expand-level><select-all minder=\"minder\"></select-all><search-btn minder=\"minder\"></search-btn><help-btn minder=\"minder\"></help-btn></tab></tabset>"
   );
 
 
@@ -2221,6 +2221,10 @@ angular.module('kityminderEditor').run(['$templateCache', function($templateCach
 
   $templateCache.put('ui/dialog/image/image.tpl.html',
     "<div class=\"modal-header\"><h3 class=\"modal-title\">图片</h3></div><div class=\"modal-body\"><tabset><tab heading=\"图片搜索\"><form class=\"form-inline\"><div class=\"form-group\"><label for=\"search-keyword\">关键词：</label><input type=\"text\" class=\"form-control\" ng-model=\"data.searchKeyword2\" id=\"search-keyword\" placeholder=\"请输入搜索的关键词\"></div><button class=\"btn btn-primary\" ng-click=\"searchImage()\">百度一下</button></form><div class=\"search-result\" id=\"search-result\"><ul><li ng-repeat=\"image in list\" id=\"{{ 'img-item' + $index }}\" ng-class=\"{'selected' : isSelected}\" ng-click=\"selectImage($event)\"><img id=\"{{ 'img-' + $index }}\" ng-src=\"{{ image.src || '' }}\" alt=\"{{ image.title }}\" onerror=\"this.parentNode.removeChild(this)\"> <span>{{ image.title }}</span></li></ul></div></tab><tab heading=\"外链图片\" active=\"true\"><form><div class=\"form-group\" ng-class=\"{true: 'has-success', false: 'has-error'}[urlPassed]\"><label for=\"image-url\">链接地址：</label><input type=\"text\" class=\"form-control\" ng-model=\"data.url\" ng-blur=\"urlPassed = data.R_URL.test(data.url)\" ng-focus=\"this.value = data.url\" ng-keydown=\"shortCut($event)\" id=\"image-url\" placeholder=\"必填：以 http(s):// 开头\"></div><div class=\"form-group\" ng-class=\"{'has-success' : titlePassed}\"><label for=\"image-title\">提示文本：</label><input type=\"text\" class=\"form-control\" ng-model=\"data.title\" ng-blur=\"titlePassed = true\" id=\"image-title\" placeholder=\"选填：鼠标在图片上悬停时提示的文本\"></div><div class=\"form-group\"><label for=\"image-preview\">图片预览：</label><img class=\"image-preview\" id=\"image-preview\" ng-src=\"{{ data.url }}\" alt=\"{{ data.title }}\"></div></form></tab><tab heading=\"上传图片\" style=\"display:none;\"><form><div class=\"form-group\"><input type=\"file\" name=\"upload-image\" id=\"upload-image\" class=\"upload-image\" accept=\".jpg,.JPG,jpeg,JPEG,.png,.PNG,.gif,.GIF\" onchange=\"angular.element(this).scope().uploadImage()\"><label for=\"upload-image\" class=\"btn btn-primary\"><span>选择文件&hellip;</span></label></div><div class=\"form-group\" ng-class=\"{'has-success' : titlePassed}\"><label for=\"image-title\">提示文本：</label><input type=\"text\" class=\"form-control\" ng-model=\"data.title\" ng-blur=\"titlePassed = true\" id=\"image-title\" placeholder=\"选填：鼠标在图片上悬停时提示的文本\"></div><div class=\"form-group\"><label for=\"image-preview\">图片预览：</label><img class=\"image-preview\" id=\"image-preview\" ng-src=\"{{ data.url }}\" title=\"{{ data.title }}\" alt=\"{{ data.title }}\"></div></form></tab></tabset></div><div class=\"modal-footer\"><button class=\"btn btn-primary\" ng-click=\"ok()\">确定</button> <button class=\"btn btn-warning\" ng-click=\"cancel()\">取消</button></div>"
+  );
+
+  $templateCache.put('ui/directive/helpBtn/helpBtn.html',
+    "<div class=\"btn-group-vertical\" dropdown is-open=\"isopen\"><button type=\"button\" class=\"btn btn-default help\" title=\"{{ 'help' | lang:'ui' }}\" ng-class=\"{'active': isopen}\" ng-click=\"enterHelp()\"></button> <button type=\"button\" class=\"btn btn-default help-caption dropdown-toggle\" ng-click=\"enterHelp()\" title=\"{{ 'help' | lang:'ui' }}\"><span class=\"caption\">{{ 'help' | lang:'ui' }}</span> <span class=\"sr-only\">{{ 'help' | lang:'ui' }}</span></button></div>"
   );
 
 }]);
@@ -4380,6 +4384,27 @@ angular.module('kityminderEditor')
             }
         }
     });
+angular.module('kityminderEditor')
+    .directive('helpBtn', ['$modal', function($modal) {
+        return {
+            restrict: 'E',
+            templateUrl: 'ui/directive/helpBtn/helpBtn.html',
+            scope: {
+                minder: '='
+            },
+            replace: true,
+            link: function ($scope) {
+
+                $scope.enterHelp = function() {
+                    var hyperlinkModal = $modal.open({
+                        animation: true,
+                        templateUrl: 'dist/helpDlg.tpl.html',
+                        size: 'md'
+                    });
+                }
+            }
+        }
+    }]);
 angular.module('kityminderEditor')
     .directive('selectAll', function() {
         return {

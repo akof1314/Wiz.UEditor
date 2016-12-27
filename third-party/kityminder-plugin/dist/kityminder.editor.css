@@ -1342,6 +1342,42 @@ div a.theme-item {
 .btn-group-vertical .search-caption .caption {
   font-size: 12px;
 }
+.btn-group-vertical {
+  vertical-align: middle;
+  margin: 5px;
+}
+.btn-group-vertical .help,
+.btn-group-vertical .help-caption {
+  width: 40px;
+  margin: 0;
+  padding: 0;
+  border: none!important;
+  border-radius: 0!important;
+}
+.btn-group-vertical .help:hover,
+.btn-group-vertical .help-caption:hover {
+  background-color: #eff3fa;
+}
+.btn-group-vertical .help:active,
+.btn-group-vertical .help-caption:active {
+  background-color: #c4d0ee;
+}
+.btn-group-vertical .help.active,
+.btn-group-vertical .help-caption.active {
+  box-shadow: none;
+  background-color: #eff3fa;
+}
+.btn-group-vertical .help {
+  height: 25px;
+  background: url(images/icons.png) no-repeat 0 -470px;
+  background-position-x: 50%;
+}
+.btn-group-vertical .help-caption {
+  height: 20px;
+}
+.btn-group-vertical .help-caption .caption {
+  font-size: 12px;
+}
 .search-box {
   float: right;
   background-color: #fff;
@@ -1526,3 +1562,61 @@ div a.theme-item {
   cursor: grabbing;
 }
 /*# sourceMappingURL=kityminder.editor.css.map */
+body,header,html {
+font-family:Arial,"Hiragino Sans GB","Microsoft YaHei","WenQuanYi Micro Hei",sans-serif;
+margin:0;
+}
+.shortcut-dialog {
+height:400px;
+overflow:scroll;
+-moz-user-select:none;
+-webkit-user-select:none;
+-ms-user-select:none;
+-khtml-user-select:none;
+user-select:none;
+}
+.shortcut-dialog section {
+min-width:300px;
+margin:0 20px 20px 0;
+}
+.shortcut-dialog section h3 {
+border-bottom:1px solid #EEE;
+font-size:16px;
+font-weight:700;
+padding-bottom:5px;
+margin-top:0;
+}
+.shortcut-dialog section div.shortcut-group {
+  margin: 5px auto;
+}
+.shortcut-dialog section div.shortcut-group span.shortcut {
+  display: inline-block;
+  width: 220px;
+  text-align: right;
+  margin-right: 10px;
+}
+.shortcut-dialog section div.shortcut-group span.shortcut .shortcut-key {
+  display: inline-block;
+  padding: 3px 8px 5px;
+  font-size: 12px;
+  font-weight: normal;
+  line-height: 14px;
+  color: #6e6e6e;
+  /* text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.25); */
+  white-space: nowrap;
+  vertical-align: middle;
+  background-color: #fcfcfc;
+  border-radius: 3px;
+  border: 1px solid #cccccc;
+  text-transform: capitalize;
+  box-shadow: inset 0 -2px #ebebeb, inset 0 -3px #ffffff, 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+.shortcut-dialog section div.shortcut-group span.shortcut .shortcut-key:active {
+  padding-top: 4px;
+  padding-bottom: 4px;
+  box-shadow: inset 0 -1px #ebebeb, inset 0 -2px #ffffff, 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+.shortcut-dialog section div.shortcut-group span.shortcut .shortcut-key:active:after {
+  -webkit-transform: translate(0, 1px);
+          transform: translate(0, 1px);
+}

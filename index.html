@@ -240,17 +240,18 @@
             return modifiedTemp;
         }
         function OnPluginSave() {
-            savePreHtml = null;
-            if (modified) {
-                if (wizVerisonGreaterThan45) {
+            if (wizVerisonGreaterThan45) {
+                savePreHtml = null;
+                if (modified) {
                     savePreHtml = objDocument.GetHtml();
+                    saveDocument(editor);
+                    savePreTime = new Date();
                 }
+            }
+            else {
                 saveDocument(editor);
             }
 
-            if (wizVerisonGreaterThan45) {
-                savePreTime = new Date();
-            }
             return true;
         }
         function getPluginPath() {

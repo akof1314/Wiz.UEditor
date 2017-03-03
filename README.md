@@ -10,12 +10,13 @@
 [http://akof1314.github.io/Wiz.UEditor](http://akof1314.github.io/Wiz.UEditor)
 
 #### 当前版本
-2.1
+2.2
 
 #### 版本说明
 基于 1.4.3 版本 UEditor
 
 #### 主要修改
+- 新增思维导图插件
 - 新增数学公式插件
 - 新增插入图片功能
 - 新增屏幕截图功能
